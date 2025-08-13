@@ -1,6 +1,12 @@
 import 'package:dart_application_1/logic.dart' as dart_application_1;
+import 'package:intl/intl.dart';
 
 void main(List<String> arguments) {
+
+  var now = DateTime.now();
+  var formatter = DateFormat('dd/MM/yyyy HH:mm:ss');
+
+  print('Data e hora atual: ${formatter.format(now)}');
 
   // ---> WORKING WITH RECORDS
   // var pessoa = ('Adler', 'Coelho Santos', 30);
@@ -8,8 +14,8 @@ void main(List<String> arguments) {
   // print('Sobrenome: ${pessoa.$2}');
   // print('Idade: ${pessoa.$3}');
 
-  final (texto, numero) = dart_application_1.testeRecords(11);
-  print('Resultado: $texto, $numero');
+  // final (texto, numero) = dart_application_1.testeRecords(11);
+  // print('Resultado: $texto, $numero');
 
   // ---> WORKING WITH TEXTS
 
