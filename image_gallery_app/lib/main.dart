@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:image_gallery_app/image_details.dart';
+import 'package:image_gallery_app/routes.dart';
 
 void main() {
   runApp(MyApp());
@@ -8,65 +10,168 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      home: Scaffold(
-        body: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
+      title: 'Image Gallery',
+      theme: ThemeData(primarySwatch: Colors.blue),
+      initialRoute: '/',
+      routes: {
+        Routes.home: (context) => ImageGallery(),
+        Routes.details: (context) => ImageDetails(),
+      },
+    );
+  }
+}
+
+class ImageGallery extends StatelessWidget {
+  final List<String> images = [
+    'assets/images/imagem1.jpg',
+    'assets/images/imagem2.jpg',
+    'assets/images/imagem3.jpg',
+  ];
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(title: Text('Título da minha página')),
+      body: SingleChildScrollView(
+        child: Column(
           children: [
-            CounterStateless(count: 0),
-            SizedBox(height: 20),
-            CounterStateful(),
+            Container(
+              color: Colors.blue,
+              child: Text(
+                'Hello Flutter',
+                style: TextStyle(fontSize: 26, color: Colors.white),
+              ),
+            ),
+            Text('Hello Flutter'),
+            TextField(decoration: InputDecoration(labelText: 'Username')),
+            Column(children: [Text('item 1'), Text('item 2'), Text('item 3')]),
+            Row(children: [Text('item 1'), Text('item 2'), Text('item 3')]),
+            ElevatedButton(
+              onPressed: () {
+                print('Button pressed');
+              },
+              child: Text('Mari te amo <3'),
+            ),
+            Icon(
+              Icons.check_circle_outline_outlined,
+              color: Colors.black,
+              size: 130,
+            ),
+            Card(
+              child: ListTile(
+                title: Text('Título'),
+                subtitle: Text('Subtítulo'),
+                leading: Icon(Icons.info),
+                trailing: Icon(Icons.arrow_forward),
+              ),
+            ),
+            DropdownButton<String>(
+              items: [
+                DropdownMenuItem(child: Text('Item 1'), value: 'item1'),
+                DropdownMenuItem(child: Text('Item 2'), value: 'item2'),
+                DropdownMenuItem(child: Text('Item 3'), value: 'item3'),
+              ],
+              onChanged: (value) {
+                print('Selected: $value');
+              },
+              value: 'item1',
+            ),
+            SwitchListTile(
+              title: Text('Switch'),
+              value: false,
+              onChanged: (value) {
+                print('Switch changed: $value');
+              },
+            ),
+            Checkbox(
+              value: true,
+              onChanged: (value) {
+                print('Checkbox changed: $value');
+              },
+            ),
+            Row(
+              children: [
+                Expanded(
+                  child: Container(
+                    width: 100,
+                    height: 50,
+                    color: Colors.red,
+                    child: Text(
+                      'Hello Flutter',
+                      style: TextStyle(fontSize: 26, color: Colors.yellow),
+                    ),
+                  ),
+                ),
+                Expanded(
+                  child: Container(
+                    height: 50,
+                    color: Colors.green,
+                    child: Text(
+                      'Hello Flutter',
+                      style: TextStyle(fontSize: 26, color: Colors.yellow),
+                    ),
+                  ),
+                ),
+              ],
+            ),
+            SizedBox(height: 10),
+            Row(
+              children: [
+                Expanded(
+                  child: Container(
+                    height: 30,
+                    color: Colors.red,
+                    child: Text(
+                      'Hello Flutter',
+                      style: TextStyle(fontSize: 26, color: Colors.yellow),
+                    ),
+                  ),
+                ),
+                Expanded(
+                  child: Container(
+                    height: 30,
+                    color: Colors.green,
+                    child: Text(
+                      'Hello Flutter',
+                      style: TextStyle(fontSize: 26, color: Colors.yellow),
+                    ),
+                  ),
+                ),
+              ],
+            ),
+            SizedBox(height: 10),
+            GridView.builder(
+              physics: NeverScrollableScrollPhysics(),
+              shrinkWrap: true,
+              gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                crossAxisCount: 2,
+              ),
+              itemCount: images.length,
+              itemBuilder: (context, index) {
+                return GestureDetector(
+                  onTap: () {
+                    Navigator.pushNamed(
+                      context,
+                      Routes.details,
+                      arguments: images[index],
+                    );
+                  },
+                  child: Card(
+                    child: Image.asset(images[index], fit: BoxFit.cover),
+                  ),
+                );
+              },
+            ),
+            ListView(
+              physics: NeverScrollableScrollPhysics(),
+              shrinkWrap: true,
+              children: <Widget>[
+                for (var image in images)
+                  ListTile(title: Text('image path: $image')),
+              ],
+            ),
           ],
         ),
-      ),
-    );
-  }
-}
-
-class CounterStateless extends StatelessWidget {
-  final int count;
-
-  CounterStateless({required this.count});
-
-  @override
-  Widget build(BuildContext context) {
-    return Center(
-      child: Column(
-        children: [
-          Text('StatelessWidget'),
-          Text('Contagem:', style: TextStyle(fontSize: 26)),
-          ElevatedButton(onPressed: () {}, child: Text('Incrementar')),
-        ],
-      ),
-    );
-  }
-}
-
-class CounterStateful extends StatefulWidget {
-  @override
-  State<StatefulWidget> createState() {
-    return _CounterStatefulState();
-  }
-}
-
-class _CounterStatefulState extends State<CounterStateful> {
-  int count = 0;
-
-  @override
-  Widget build(BuildContext context) {
-    return Center(
-      child: Column(
-        children: [
-          Text('StatefulWidget'),
-          Text('Contagem: $count', style: TextStyle(fontSize: 26)),
-          ElevatedButton(
-            onPressed: () {
-              setState(() {
-                count++;
-              });
-            },
-            child: Text('Incrementar'),
-          ),
-        ],
       ),
     );
   }
